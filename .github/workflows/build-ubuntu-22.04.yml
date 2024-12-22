@@ -42,5 +42,5 @@ jobs:
       working-directory: uvalang-analyzer
       
     - name: Build project
-      run: cmake --build build --config Release --parallel
+      run: cmake --build build --config Release --parallel --target uva-analyzer
       working-directory: uvalang-analyzer
