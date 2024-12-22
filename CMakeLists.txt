@@ -5,11 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(uvalang-analyser)
 
-include("../uva/CMakeLists.txt")
+include("../uva-lang/CMakeLists.txt")
 
 uva_library(string)
 
-include("../uva-lang/CMakeLists.txt")
 
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
