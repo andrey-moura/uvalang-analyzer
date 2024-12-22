@@ -36,12 +36,12 @@ int main(int argc, char** argv) {
 
     if(is_server) {
         if(args.size() > 0) {
-            std::cerr << "uvalang-analyser --server takes no arguments. Write <input-file>\\n<temp-file>\\n to stdin" << std::endl;
+            std::cerr << "uvalang-analyzer --server takes no arguments. Write <input-file>\\n<temp-file>\\n to stdin" << std::endl;
             return 1;
         }
     } else {
         if(args.size() != 1 && args.size() != 2) {
-            std::cerr << "uvalang-analyser <input-file> [temp-file] or uvalang-analyser --server" << std::endl;
+            std::cerr << "uvalang-analyzer <input-file> [temp-file] or uvalang-analyzer --server" << std::endl;
             return 1;
         }
     }
