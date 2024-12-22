@@ -95,6 +95,9 @@ int main(int argc, char** argv) {
         } catch (const std::exception& e) {
             (void)e;
         }
+        
+        uva::lang::preprocessor preprocessor;
+        preprocessor.process(file_path, l);
 
         // Note we are writing directly to the cout instead of saving and encoding the output
 
