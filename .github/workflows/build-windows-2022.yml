@@ -22,7 +22,7 @@ jobs:
     - name: Checkout uvalang
       uses: actions/checkout@v3
       with:
-        submodules: recursive
+        repository: andrey-moura/uva-lang
         path: 'uva-lang'
 
     - name: Checkout uvalang-analyzer
