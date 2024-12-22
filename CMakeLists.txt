@@ -9,7 +9,6 @@ include("../uva-lang/CMakeLists.txt")
 
 uva_library(string)
 
-
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 add_executable(uvalang-analyser
