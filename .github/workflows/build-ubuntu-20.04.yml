@@ -1,0 +1,46 @@
+name: Ubuntu 20.04
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Install dependencies
+      run: sudo apt-get install -y build-essential
+    
+    - name: Checkout uva
+      uses: actions/checkout@v3
+      with:
+        repository: andrey-moura/uva
+        path: 'uva'
+    
+    - name: Checkout uvalang
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        path: 'uva-lang'
+        
+    - name: Checkout uvalang-analyzer
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        path: 'uva-analyzer'
+
+    - name: Set up CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Configure CMake
+      run: cmake -B build .
+      working-directory: uva-analyzer
+      
+    - name: Build project
+      run: cmake --build build --config Release --parallel
+      working-directory: uva-analyzer
