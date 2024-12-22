@@ -32,15 +32,15 @@ jobs:
       uses: actions/checkout@v3
       with:
         submodules: recursive
-        path: 'uva-analyzer'
+        path: 'uvalang-analyzer'
 
     - name: Set up CMake
       uses: lukka/get-cmake@latest
 
     - name: Configure CMake
       run: cmake -B build .
-      working-directory: uva-analyzer
+      working-directory: uvalang-analyzer
       
     - name: Build project
-      run: cmake --build build --config Release --parallel --target uva-analyzer
-      working-directory: uva-analyzer
+      run: cmake --build build --config Release --parallel --target uvalang-analyzer
+      working-directory: uvalang-analyzer
