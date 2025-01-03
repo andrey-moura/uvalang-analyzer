@@ -15,11 +15,11 @@ using namespace uva;
 
 std::shared_ptr<uva::lang::object> application;
 //std::vector<uva::lang::extension*> extensions;
+size_t num_linter_warnings = 0;
 
 void write_linter_warning(std::string_view type, std::string_view message, std::string_view file_name, uva::lang::lexer::token_position start, size_t length)
 {
-    static size_t i = 0;
-    if(i) {
+    if(num_linter_warnings) {
         std::cout << ",\n";
     }
     std::cout << "\t\t{\n\t\t\t\"type\": \"";
@@ -37,7 +37,7 @@ void write_linter_warning(std::string_view type, std::string_view message, std::
     std::cout << ",\n\t\t\t\t\"length\": ";
     std::cout << length;
     std::cout << "\n\t\t\t}\n\t\t}";
-    ++i;
+    ++num_linter_warnings;
 }
 
 int main(int argc, char** argv) {
@@ -86,6 +86,7 @@ int main(int argc, char** argv) {
     bool run = true;
 
     while(run) {
+        num_linter_warnings = 0;
         std::filesystem::path uva_executable_path = argv[0];
 
         if(is_server) {
