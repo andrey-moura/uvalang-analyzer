@@ -110,8 +110,16 @@ int main(int argc, char** argv) {
                     switch(token.kind()) {
                         case uva::lang::lexer::token_kind::token_string:
                             size_t offset = token.start.offset;
+                            char c;
 
-                            const char& c = source[offset];
+                            if(token.m_file_name != file_path.string()) {
+                                //TODO: save all files in lexer
+                                std::ifstream file(token.m_file_name);
+                                file.seekg(offset);
+                                file.read(&c, 1);
+                            } else {
+                                c = source[offset];
+                            }
 
                             switch(c)
                             {
