@@ -102,21 +102,44 @@ int main(int argc, char** argv) {
         // Note we are writing directly to the cout instead of saving and encoding the output
 
         std::cout << "{\n";
-        std::cout << "\t\"tokens\": [";
+        std::cout << "\t\"linter\": [\n";
 
-        // for(const auto& token : l.tokens()) {
-        //     switch(token.type()) {
-        //         case uva::lang::lexer::token_type::token_keyword:
-        //         case uva::lang::lexer::token_type::token_literal:
-        //             std::cout << "\t";
-        //             std::cout << "{ \"type\": \"keyword\", \"content\": \"";
-        //             std::cout << token.content();
-        //             std::cout << "\" }" << std::endl;
-        //         break;
-        //     }
-        // }
+        for(const auto& token : l.tokens()) {
+            switch(token.type()) {
+                case uva::lang::lexer::token_type::token_literal:
+                    switch(token.kind()) {
+                        case uva::lang::lexer::token_kind::token_string:
+                            size_t offset = token.start.offset;
 
-        std::cout << "],\n";
+                            const char& c = source[offset];
+
+                            switch(c)
+                            {
+                                case '\"':
+                                    if(token.content().find("${") == std::string::npos) {
+                                        std::cout << "\t\t{\n\t\t\t\"type\": \"string-default-single-quotes\",\n\t\t\t\"message\": \"";
+                                        std::cout << "String literal without interpolation should use single quotes.";
+                                        std::cout << "\",\n\t\t\t\"location\": {\n\t\t\t\t\"file\": \"";
+                                        std::cout << token.m_file_name;
+                                        std::cout << "\",\n\t\t\t\t\"line\": ";
+                                        std::cout << token.start.line;
+                                        std::cout << ",\n\t\t\t\t\"column\": ";
+                                        std::cout << token.start.column;
+                                        std::cout << ",\n\t\t\t\t\"offset\": ";
+                                        std::cout << token.start.offset;
+                                        std::cout << ",\n\t\t\t\t\"length\": ";
+                                        std::cout << token.content().size();
+                                        std::cout << "\n\t\t\t}\n\t\t}";
+                                    }
+                                break;
+                            }
+                        break;
+                    }
+                break;
+            }
+        }
+
+        std::cout << "\n\t],\n";
 
         std::cout << "\t\"declarations\": [";
 
