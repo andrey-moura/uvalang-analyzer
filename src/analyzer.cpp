@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
                                         std::cout << ",\n\t\t\t\t\"offset\": ";
                                         std::cout << token.start.offset;
                                         std::cout << ",\n\t\t\t\t\"length\": ";
-                                        std::cout << token.content().size();
+                                        std::cout << token.content().size() + 2; // +2 for the quotes
                                         std::cout << "\n\t\t\t}\n\t\t}";
                                     }
                                 break;
