@@ -16,6 +16,30 @@ using namespace uva;
 std::shared_ptr<uva::lang::object> application;
 //std::vector<uva::lang::extension*> extensions;
 
+void write_linter_warning(std::string_view type, std::string_view message, std::string_view file_name, uva::lang::lexer::token_position start, size_t length)
+{
+    static size_t i = 0;
+    if(i) {
+        std::cout << ",\n";
+    }
+    std::cout << "\t\t{\n\t\t\t\"type\": \"";
+    std::cout << type;
+    std::cout << "\",\n\t\t\t\"message\": \"";
+    std::cout << message;
+    std::cout << "\",\n\t\t\t\"location\": {\n\t\t\t\t\"file\": \"";
+    std::cout << file_name;
+    std::cout << "\",\n\t\t\t\t\"line\": ";
+    std::cout << start.line;
+    std::cout << ",\n\t\t\t\t\"column\": ";
+    std::cout << start.column;
+    std::cout << ",\n\t\t\t\t\"offset\": ";
+    std::cout << start.offset;
+    std::cout << ",\n\t\t\t\t\"length\": ";
+    std::cout << length;
+    std::cout << "\n\t\t\t}\n\t\t}";
+    ++i;
+}
+
 int main(int argc, char** argv) {
     std::vector<std::string_view> args;
     args.reserve(argc);
@@ -125,19 +149,7 @@ int main(int argc, char** argv) {
                             {
                                 case '\"':
                                     if(token.content().find("${") == std::string::npos) {
-                                        std::cout << "\t\t{\n\t\t\t\"type\": \"string-default-single-quotes\",\n\t\t\t\"message\": \"";
-                                        std::cout << "String literal without interpolation should use single quotes.";
-                                        std::cout << "\",\n\t\t\t\"location\": {\n\t\t\t\t\"file\": \"";
-                                        std::cout << token.m_file_name;
-                                        std::cout << "\",\n\t\t\t\t\"line\": ";
-                                        std::cout << token.start.line;
-                                        std::cout << ",\n\t\t\t\t\"column\": ";
-                                        std::cout << token.start.column;
-                                        std::cout << ",\n\t\t\t\t\"offset\": ";
-                                        std::cout << token.start.offset;
-                                        std::cout << ",\n\t\t\t\t\"length\": ";
-                                        std::cout << token.content().size() + 2; // +2 for the quotes
-                                        std::cout << "\n\t\t\t}\n\t\t}";
+                                        write_linter_warning("string-default-single-quotes", "String literal without interpolation should use single quotes", token.m_file_name, token.start, token.content().size() + 2 /* 2 for the quotes */);
                                     }
                                 break;
                             }
