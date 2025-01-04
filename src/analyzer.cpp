@@ -129,7 +129,30 @@ int main(int argc, char** argv) {
         std::cout << "{\n";
         std::cout << "\t\"linter\": [\n";
 
-        for(const auto& token : l.tokens()) {
+        // Token level linting
+        for(size_t i = 0; i < l.tokens().size(); i++) {
+            const auto& token = l.tokens()[i];
+            bool is_last_of_line = false;
+            if(i < l.tokens().size() - 1) {
+                const auto& next_token = l.tokens()[i + 1];
+
+                if(next_token.m_file_name == token.m_file_name && next_token.start.line != token.start.line) {
+                    std::ifstream file(token.m_file_name);
+                    file.seekg(token.end.offset);
+                    char last_char = file.get();
+                    if(last_char != '\n') {
+                        // Can only be an whitespace
+                        uva::lang::lexer::token_position pos = token.end;
+                        size_t len = 1;
+                        while(file.get() == ' ') {
+                            len++;
+                        }
+                        
+                        write_linter_warning("trailing-whitespace", "Trailing whitespace at end of line", token.m_file_name, pos, len);
+                    }
+                }
+            }
+
             switch(token.type()) {
                 case uva::lang::lexer::token_type::token_literal:
                     switch(token.kind()) {
